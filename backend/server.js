@@ -1,7 +1,8 @@
 const express = require("express");
+const cors = require("cors");
 
 const app = express();
-const cors = require("cors");
+
 const PORT = 5000;
 
 // Middleware to parse JSON
