@@ -3,14 +3,21 @@
 body {
   margin: 0;
   font-family: Arial, sans-serif;
-  background: #f5f5f5;
-  color: #222;
+  background: black;
+  color: black;
 }
 
 .header {
   padding: 24px 16px;
-  background: white;
+  background: black;
   border-bottom: 1px solid #ddd;
+}
+.header h1{
+  color: white;
+}
+
+.header p{
+  color: white;
 }
 
 .container {

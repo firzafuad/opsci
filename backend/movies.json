@@ -14,31 +14,32 @@
     "image_url": "/images/interstellar.jpg"
   },
   {
-    "title": "The Dark Knight",
-    "year": 2008,
-    "director": "Christopher Nolan",
+    "title": "Kimetsu no Yaiba: Mugen Ressha-Hen",
+    "year": 2021,
+    "director": "Haruo Sotozaki",
     "genre": "Action",
-    "image_url": "/images/the-dark-knight.jpg"
+    "image_url": "/images/MugenTrain.jpg"
   },
   {
-    "title": "Pulp Fiction",
-    "year": 1994,
-    "director": "Quentin Tarantino",
-    "genre": "Crime",
-    "image_url": "/images/pulp-fiction.jpg"
+    "title": "Weathering With You",
+    "year": 2019,
+    "director": "Makoto Shinkai",
+    "genre": "Romance",
+    "image_url": "/images/WeatheringWY.jpg"
   },
   {
-    "title": "Kill Bill: Vol. 1",
-    "year": 2003,
-    "director": "Quentin Tarantino",
+    "title": "Attack on Titan the Movie: The Last Attack",
+    "year": 2024,
+    "director": "Hajime Isayama",
     "genre": "Action",
-    "image_url": "/images/kill-bill-vol-1.jpg"
+    "image_url": "/images/TheLastAttack.jpg"
   },
   {
-    "title": "The Shawshank Redemption",
-    "year": 1994,
-    "director": "Frank Darabont",
-    "genre": "Drama"
+    "title": "Chainsaw Man-The Movie: Reze Arc",
+    "year": 2025,
+    "director": "Tatsuki Fujimoto",
+    "genre": "Drama",
+    "image_url": "/images/Chainsaw-Man-Reze.jpg"
   },
   {
     "title": "Forrest Gump",
