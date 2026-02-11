@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const axios = require("axios")
 require("dotenv").config();
+const { findDirector } = require("./utils/movies");
 
 
 const app = express();
@@ -38,23 +39,32 @@ app.get("/movies", async (req, res) => {
         	Authorization: `Bearer ${TMDB_TOKEN}`,
         	accept: "application/json"
       	}
-    });
+		});
 
-	const rawMovies = response.data.results;
+		const rawMovies = response.data.results;
+		const rawCredits = await Promise.all(rawMovies.map(movie => 
+			axios.get(`${TMDB_BASE}/movie/${movie.id}/credits`, {
+				headers: {
+					Authorization: `Bearer ${TMDB_TOKEN}`,
+					accept: "application/json"
+				}
+			}).then(res => res.data)
+		));
 
-	const movies = rawMovies.map(movie => ({
-		title: movie.title,
-    	description: movie.overview,
-    	image_url: movie.poster_path ? TMDB_IMG_BASE + movie.poster_path: null, 
-      	id: movie.id,
-      	year: movie.release_date ? movie.release_date.substring(0, 4) : "N/A"
-    }));
+		const movies = rawMovies.map(movie => ({
+			title: movie.title,
+			director: findDirector(rawCredits.find(m => m.id === movie.id)),
+			description: movie.overview,
+			image_url: movie.poster_path ? TMDB_IMG_BASE + movie.poster_path: null, 
+			id: movie.id,
+			year: movie.release_date ? movie.release_date.substring(0, 4) : "N/A"
+		}));
 
-	const limit = req.query.limit ? parseInt(req.query.limit) : 20;
-  	if (limit) {
-    	return res.json(movies.slice(0, limit));
-  	}
-  	res.json(movies);
+		const limit = req.query.limit ? parseInt(req.query.limit) : 20;
+		if (limit) {
+			return res.json(movies.slice(0, limit));
+		}
+		res.json(movies);
 	} catch (error) {
 		console.error("Erreur API :", error.message);
     	res.status(500).json({ error: "Impossible de récupérer les films" });
