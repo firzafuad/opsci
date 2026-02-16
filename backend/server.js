@@ -26,9 +26,9 @@ app.get("/movies", async (req, res) => {
 		const rawMovies = (await tmdb_get("/movie/popular", {language: "fr-FR", page: 1})).results || [];
 		const rawCredits = await Promise.all(rawMovies.map(movie => tmdb_get(`movie/${movie.id}/credits`)));
 
-		const movies = rawMovies.map(movie => ({
-			...normalizeMovie(movie, rawCredits)
-		}));
+		const movies = rawMovies.map(movie => 
+    			normalizeMovie(movie, rawCredits)
+		);
 
 		const limit = req.query.limit ? parseInt(req.query.limit) : 20;
 		if (limit) {
@@ -48,9 +48,9 @@ app.get("/export/movies.json", async (req, res) => {
 		const rawMovies = (await tmdb_get("/movie/popular", {language: "fr-FR", page: 1})).results || [];
 		const rawCredits = await Promise.all(rawMovies.map(movie => tmdb_get(`movie/${movie.id}/credits`)));
 
-		const movies = rawMovies.map(movie => ({
-			...normalizeMovie(movie, rawCredits)
-		}));
+		const movies = rawMovies.map(movie => 
+    		normalizeMovie(movie, rawCredits)
+		);
 		const limit = req.query.limit ? parseInt(req.query.limit) : movies.length;
 		
 		const stamp = new Date().toLocaleDateString("fr-FR").replace(/\//g, "-");
@@ -83,9 +83,9 @@ app.get("/movies/search", async (req, res) => {
 		const rawMovies = (await tmdb_get("/search/movie", {language: "fr-FR", query})).results || [];
 		const rawCredits = await Promise.all(rawMovies.map(movie => tmdb_get(`movie/${movie.id}/credits`)));
 
-		const movies = rawMovies.map(movie => ({
-			...normalizeMovie(movie, rawCredits)
-		}));
+		const movies = rawMovies.map(movie => 
+    		normalizeMovie(movie, rawCredits)
+		);
 
 		const limit = req.query.limit ? parseInt(req.query.limit) : 20;
 		if (limit) {
