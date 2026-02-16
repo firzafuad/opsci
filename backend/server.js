@@ -66,7 +66,6 @@ app.get("/export/movies.json", async (req, res) => {
 			if (err) {
 				console.error("Erreur de téléchargement :", err.message, filepath);
 			}
-			fs.unlinkSync(filepath); // Supprimer le fichier après le téléchargement
 		});
 	} catch (error) {
 		console.error("Erreur API :", error.message);
@@ -74,7 +73,30 @@ app.get("/export/movies.json", async (req, res) => {
 	}
 });
 
+// Search movies by title
+app.get("/movies/search", async (req, res) => {
+	const query = req.query.query;
+	if (!query) {
+		return res.status(400).json({ error: "Le paramètre 'query' est requis" });
+	}
+	try {
+		const rawMovies = (await tmdb_get("/search/movie", {language: "fr-FR", query})).results || [];
+		const rawCredits = await Promise.all(rawMovies.map(movie => tmdb_get(`movie/${movie.id}/credits`)));
 
+		const movies = rawMovies.map(movie => ({
+			...normalizeMovie(movie, rawCredits)
+		}));
+
+		const limit = req.query.limit ? parseInt(req.query.limit) : 20;
+		if (limit) {
+			return res.json(movies.slice(0, limit));
+		}
+		res.json(movies);
+	} catch (error) {
+		console.error("Erreur API :", error.message);
+		res.status(500).json({ error: "Impossible de rechercher les films" });
+	}
+});
 // Get movie image
 app.use('/images', (express.static('images')));
 

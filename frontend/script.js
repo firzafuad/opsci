@@ -10,6 +10,26 @@ async function loadMovies(limit = 12) {
   return await res.json();
 }
 
+async function searchMovies(query, limit = 12) {
+  const res = await fetch(`${API_BASE}/movies/search?query=${encodeURIComponent(query)}&limit=${limit}`);
+  if (!res.ok) {
+    throw new Error(`Erreur API: ${res.status} ${res.statusText}`);
+  }
+  return await res.json();
+}
+
+function handleSearch(event) {
+  event.preventDefault();
+  const query = document.getElementById("search-input").value.trim();
+  if (query === "") {
+    return;
+  }
+  searchMovies(query).then(renderMovies).catch(err => {
+    console.error(err);
+    container.innerHTML = `<p style="color: red;">Erreur: ${err.message}</p>`;
+  });
+}
+
 function resolveImageUrl(movie) {
   // Si l'API renvoie une URL absolue (TMDB), on l'utilise telle quelle.
   // Sinon, on pr&eacute;fixe par l'API (cas TME2: "/images/xxx.jpg").
@@ -20,6 +40,10 @@ function resolveImageUrl(movie) {
 
 function renderMovies(movies) {
   container.innerHTML = "";
+  if (movies.length === 0) {
+    container.innerHTML = "<p style=\"color: red;\">Aucun film trouv&eacute;.</p>";
+    return;
+  }
 
   movies.forEach(movie => {
     const card = document.createElement("article");
@@ -46,7 +70,7 @@ async function main() {
     renderMovies(movies);
   } catch (err) {
     console.error(err);
-    container.innerHTML = `<p>Erreur: ${err.message}</p>`;
+    container.innerHTML = `<p style="color: red;">Erreur: ${err.message}</p>`;
   }
 }
 
